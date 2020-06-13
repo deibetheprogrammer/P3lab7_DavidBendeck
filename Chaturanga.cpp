@@ -9,24 +9,20 @@
 
 using std::cout;
 using std::endl;
-
+using std::cin;
 Chaturanga::Chaturanga() {
 	
 	cout << "pasa" << endl;
 	
-	//tablero = (Pieza***)tablero2;
-	
-	Pieza*** matriz=NULL;
 	
 	//crear el arreglo de apuntadores
-	matriz = new Pieza**[8];
+	tablero = new Pieza**[8];
 	
 	//instanciar los arreglos de chars
 	for(int i =0; i<8;i++){
-		matriz[i]=new Pieza*[8];
+		tablero[i]=new Pieza*[8];
 	} 
 	
-	tablero = matriz;
 	
 	for(int i = 2; i <= 6; i++) {
 		for(int j = 0; j < 8; j++) {
@@ -34,17 +30,9 @@ Chaturanga::Chaturanga() {
 		}
 	}
 	
-	cout << "aqui" << endl;
-	
 	//NEGRAS
 	tablero[0][0] = new Torre(0,0,false,tablero);
 	tablero[0][7] = new Torre(0,7,false,tablero);
-	
-//	cout << "caracter " << tablero[0][0]->getCaracter() << endl;
-
-	Pieza* prueba = new Torre(0,0,false,tablero);
-	
-	cout << "caracter " << prueba->getCaracter() << endl;
 	
 	tablero[0][1] = new Caballo(0,1,false,tablero);
 	tablero[0][6] = new Caballo(0,6,false,tablero);
@@ -76,16 +64,60 @@ Chaturanga::Chaturanga() {
 		tablero[6][i] = new Infanteria(6,i,true,tablero);
 	}
 	
-	cout << "pasa2" << endl;
 	
 }
 
 //FUNCTIONS
 void Chaturanga::Juego()
 {
-	cout << "pasa3" << endl;
-	printTablero();
-	cout << "pasa4" << endl;
+	string leyenda;
+	bool jugador=true;
+	
+	while(true){
+		printTablero();
+
+		if (jugador) leyenda="1 (Piezas Blancas)";
+		else leyenda="2 Piezas Negras";
+		bool valido=false;
+		size_t f1,f2,c1,c2;
+		string filas="01234567";
+		string cols ="ABCDEFGH";
+		while (!valido){
+			string res;
+			cin.clear();
+			cin.ignore(100,'\n');
+			cout <<"Ingrese coordenadas jugador "<<leyenda<<endl<<":";
+			cin>>res;
+			if (res=="salir"){
+				break;
+				break;
+			} 
+			if(res.size()>=5 && res[2]=='-'){
+				f1=filas.find(res[1]);
+				if (f1!=string::npos){
+					c1=cols.find(res[0]);
+					if(c1!=string::npos){
+						f2=filas.find(res[4]);
+						if(f2!=string::npos){
+							c2=cols.find(res[3]);
+							if (c2!=string::npos){
+								cout<<"fc bien\n";
+								if (tablero[f1][c1]->getBlanca()==jugador){
+									cout<<"llamar mov\n";
+									valido=tablero[f1][c1]->Movimiento(f2,c2);
+								}
+							}
+						}
+					}
+				}
+			} 
+			if(!valido){
+				cout<<"Ingrese un movimiento valido!!"<<endl<<endl;
+			}
+		}
+		jugador=!jugador;
+	}
+	
 }
 
 void Chaturanga::printTablero() {

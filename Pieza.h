@@ -10,10 +10,12 @@ class Pieza
 		//CONSTRUCTORS
 		Pieza();
 		
-		Pieza(int, int, char, bool,Pieza ***);
+		Pieza(int, int, bool,Pieza ***);
 		
 		//FUNCTIONS
 		char getCaracter();
+		void setCaracter(char);
+		bool getBlanca();
 		virtual bool Movimiento(int, int);
 		
 		~Pieza();
